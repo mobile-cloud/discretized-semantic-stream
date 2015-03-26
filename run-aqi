@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+
+SCALA_VERSION=2.10
+SPARK_HOME="/opt/spark-0.9.2"
+
+if [ -z "$1" ]; then
+  echo "Usage: run-code <jar-file> <example-class> " >&2
+  exit 1
+fi
+
+# Figure out the JAR file that our examples were packaged into. This includes a bit of a hack
+# to avoid the -sources and -doc packages that are built by publish-local.
+JAR_FILE="$1"
+
+# Since the examples JAR ideally shouldn't include spark-core (that dependency should be
+# "provided"), also add our standard Spark classpath, built using compute-classpath.sh.
+CLASSPATH=`$SPARK_HOME/bin/compute-classpath.sh`
+CLASSPATH="$JAR_FILE$CLASSPATH"
+
+# Find java binary
+if [ -n "${JAVA_HOME}" ]; then
+  RUNNER="${JAVA_HOME}/bin/java"
+else
+  if [ `command -v java` ]; then
+    RUNNER="java"
+  else
+    echo "JAVA_HOME is not set" >&2
+    exit 1
+  fi
+fi
+
+# Set JAVA_OPTS to be able to load native libraries and to set heap size
+JAVA_OPTS=" -Xms512m -Xmx512m"
+# JAVA_OPTS="$JAVA_OPTS -Djava.library.path=$SPARK_LIBRARY_PATH"
+# # Load extra JAVA_OPTS from conf/java-opts, if it exists
+# if [ -e "$FWDIR/conf/java-opts" ] ; then
+#   JAVA_OPTS="$JAVA_OPTS `cat $FWDIR/conf/java-opts`"
+# fi
+export JAVA_OPTS
+
+#./run-code <jar_file> <class> <master> <rdf_ip> <rdf_port>
+exec "$RUNNER" -cp "$CLASSPATH" $JAVA_OPTS "$2" spark://jaguarv:7077 jaguarv 30001 http://hem.org/room#bedroom_1
+

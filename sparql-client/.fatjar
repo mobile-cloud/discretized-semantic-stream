@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Tue Mar 17 23:19:44 CST 2015
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=false
+onejar.checkbox=false
+jarname=sparql-client.jar
+manifest.mergeall=false
+manifest.mainclass=com.sparql.client.QueryClient
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=
