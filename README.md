@@ -19,12 +19,12 @@
 其中，JDK、Scala、Spark需要配置好环境变量。
 ## 2. Sensor
 该目录下是语义流模拟生成程序的服务端源代码，将该工程导入Eclipse后，通过Eclipse的fatjar插件将该工程打包成名字为rdfserver.jar的包后通过命令行运行，命令行运行方式如下：
-```sh 
-java -jar rdfserver.jar <each_num> <listening_port>
+``` 
+$ java -jar rdfserver.jar <each_num> <listening_port>
 ```
 例如：
-```sh
-java -jar rdfserver.jar 10 30001
+```
+$ java -jar rdfserver.jar 10 30001
 ```
 参数含义：
 `<each_num>`  模拟每类房间的个数
@@ -74,23 +74,23 @@ com.stream.reasoning.QueryWindow <master> <hostname> <port> <sparql_ip> <sparql_
 #### 3.2.1 启动Spark集群
 先用jps命令查看Master和Worker进程是否存在
 若不存在，先执行
-```sh
+```
 $SPARK_HOME/sbin/start-all.sh
 ```
 #### 3.2.2 运行App
 集群运行主要是为了进行语义流处理的吞吐量实验。将stream-processing工程打包后生成stream-processing.jar包，放在discretized-semantic-stream根目录下。打开stream-processing.jar，删除/META-INF下除maven, *.RSA, *.MF以外的所有文件，然后通过两个脚本运行。
 ##### **运行AQI推理**
-```sh
-./run-aqi stream-processing.jar com.stream.reasoning.AQIProcessing
+```
+$ ./run-aqi stream-processing.jar com.stream.reasoning.AQIProcessing
 ```
 ##### **运行人体舒适度指数推理**
-```sh
-./run-aqi stream-processing.jar com.stream.reasoning.BodyComfortProcessing
+```
+$ ./run-aqi stream-processing.jar com.stream.reasoning.BodyComfortProcessing
 ```
 ##### **运行语义流查询**
 先启动sparql-client
-```sh
-java -jar sparql-client.jar 30002
+```
+$ java -jar sparql-client.jar 30002
 ```
 在该终端中输入SPARQL查询语句，例如
 ```
@@ -102,17 +102,17 @@ SELECT ?value ?time WHERE {
 ?sensor p:samplingTime ?time . }
 ```
 然后在另一终端里执行
-```sh
-./run-sparql stream-processing.jar com.stream.reasoning.QueryBySPARQL
 ```
-```sh
-./run-sparql stream-processing.jar com.stream.reasoning.QueryWindow
+$ ./run-sparql stream-processing.jar com.stream.reasoning.QueryBySPARQL
+```
+```
+$ ./run-sparql stream-processing.jar com.stream.reasoning.QueryWindow
 ```
 ## 4. SparklogsAnalyzer
 该工程下是对Spark运行日志进行分析的程序，运行后会生成包含分析结果的.xls文件。
 命令行运行方式：
-```sh
-SparklogsAnalyzer <dir> <file_name>
+```
+$ SparklogsAnalyzer <dir> <file_name>
 ```
 参数含义：
 `<dir>` 日志所在目录
