@@ -1,18 +1,18 @@
 # 基于Spark的物联网语义流数据处理的研究与实现
 ## ——源代码使用说明
-
+标签： onem2m
 ---
-
+[TOC]
 ## 1. 运行环境
 
-### 硬件环境：
+### 硬件环境
 | 主机名 | CPU | 内存 | 磁盘 | 网络地址 |
 | -------  | ----:  | ----:  | -----:  | ---: |
 | HDN1 | Intel(R) Xeon(R) E5606@ 2.13GHz | 16GB | 1TB | 192.168.13.200  |
 | HDN2 | Intel(R) Xeon(R) E5606@ 2.13GHz | 16GB | 2TB | 192.168.13.201  |
 | HDN3 | Intel(R) Xeon(R) E5606@ 2.13GHz | 16GB | 1.8TB | 192.168.13.202  |
 这只是集群的某种可能配置之一，单台一般配置的PC机也可以搭建Spark集群。
-### 软件环境：
+### 软件环境
 | 操作系统 | JDK | Scala | Spark |
 | :---- | :--- | :---- | :---- |
 | CentOS 6.4 x64 | JDK1.7.0_25 | Scala-2.10.1 | Spark-0.9.0 |
@@ -27,11 +27,10 @@ java -jar rdfserver.jar <each_num> <listening_port>
 java -jar rdfserver.jar 10 30001
 ```
 参数含义：
-    `<each_num>`  模拟每类房间的个数
-    `<listening_port>`  服务端监听的端口号
+`<each_num>`  模拟每类房间的个数
+`<listening_port>`  服务端监听的端口号
 在运行Spark Streaming程序之前，需要提前将该服务端程序启动。
 ## 3. stream-processing
-
 该目录下是用于语义流处理的stream-processing程序。
 ### 3.1 单机运行
 单机运行主要是为了方便代码的编写和调试，可以直接在Eclipse环境下运行，运行前需要启动RDFServer服务端。
@@ -80,11 +79,15 @@ $SPARK_HOME/sbin/start-all.sh
 ```
 #### 3.2.2 运行App
 集群运行主要是为了进行语义流处理的吞吐量实验。将stream-processing工程打包后生成stream-processing.jar包，放在discretized-semantic-stream根目录下。打开stream-processing.jar，删除/META-INF下除maven, *.RSA, *.MF以外的所有文件，然后通过两个脚本运行。
-#### 运行AQI推理
+##### **运行AQI推理**
+```sh
 ./run-aqi stream-processing.jar com.stream.reasoning.AQIProcessing
-#### 运行人体舒适度指数推理
+```
+##### **运行人体舒适度指数推理**
+```sh
 ./run-aqi stream-processing.jar com.stream.reasoning.BodyComfortProcessing
-#### 运行语义流查询
+```
+##### **运行语义流查询**
 先启动sparql-client
 ```sh
 java -jar sparql-client.jar 30002
