@@ -36,7 +36,7 @@ public class DataItem {
 	public float generateValue() {
 		double d = Math.random() * (max - min) + min;
 
-		int p = 0; // 要保留的小数位数
+		int p = 0; // the number of decimal places
 
 		switch (dataType) {
 		case "volume":
